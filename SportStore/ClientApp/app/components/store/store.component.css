@@ -1,0 +1,23 @@
+﻿.panel {
+    text-align: center;
+    width: max-content;
+    height: max-content;
+    /*margin: 20px;*/
+}
+.panel-heading {
+    background: bisque;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.badge {
+    alignment: left
+}
+
+.panel-body {
+    background: beige;
+}
+
+.btn:active {
+    background: red
+}
