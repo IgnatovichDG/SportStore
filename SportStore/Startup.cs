@@ -5,8 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using SportStore.Models;
+using SportStore.Services;
 
 namespace SportStore
 {
@@ -22,6 +26,12 @@ namespace SportStore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ShopContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
+            services.TryAddScoped<IProductRepository, ProductRepository>();
             services.AddMvc();
         }
 
@@ -31,6 +41,7 @@ namespace SportStore
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
                     HotModuleReplacement = true
@@ -47,12 +58,11 @@ namespace SportStore
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-
+                    template: "{controller=}/{action=}/{id?}");
                 routes.MapSpaFallbackRoute(
                     name: "spa-fallback",
-                    defaults: new { controller = "Home", action = "Index" });
-            });
+                    defaults: new { controller = "Home", action = "Index" });}
+            );
         }
     }
 }

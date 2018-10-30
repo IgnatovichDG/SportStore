@@ -1,5 +1,6 @@
 ﻿<div class="navbar navbar-inverse">
     <a class="navbar-brand">SPORTS STORE</a>
+    <cart-summary></cart-summary>
 </div>
 <div class="container row">
     <div class="col-sm-3">
@@ -12,13 +13,19 @@
         </button>
     </div>
     <div class="panel-group col-sm-5">
-        <div *ngFor="let product of products" class="panel panel-default">            <h4 class="panel-heading">
+        <div *ngFor="let product of products" class="panel panel-default">    
+            <h4 class="panel-heading">
                 {{product.name}}
                 <span class="badge">
                     {{ product.price | currency:"USD":true:"2.2-2" }}
                 </span>
             </h4>
-            <div class="panel-body">{{product.description}}</div>
+            <div class="panel-body">{{product.description}}
+                <button class="btn btn-success btn-sm pull-xs-right"
+                        (click)="addProductToCart(product)">
+                    Add To Cart
+                </button>
+                </div>
         </div>
     </div>    
 </div>

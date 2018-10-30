@@ -3,18 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Internal;
+using SportStore.Models;
 
 namespace SportStore.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/data")]
     public class SampleDataController : Controller
     {
-        private static string[] Summaries = new[]
+        private readonly IProductRepository _productRepository;
+
+        public SampleDataController(IProductRepository productRepository)
+        {
+            _productRepository = productRepository;
+        }
+
+        private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        [HttpGet("[action]")]
+        [HttpGet]
+        public IEnumerable<Product> Get()
+        {
+            return _productRepository.GetAll();
+        }
+
+        [HttpGet("weather")]
         public IEnumerable<WeatherForecast> WeatherForecasts()
         {
             var rng = new Random();
